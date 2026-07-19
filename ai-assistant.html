@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Foundry — AI Assistant</title>
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/ai-assistant.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar-scrim"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/icons/logo.svg" alt="QA Foundry logo">
+      <div class="brand-text"><span class="name">QA Foundry</span><span class="tag">Test Ops Workspace</span></div>
+    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Overview</div>
+      <a class="nav-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="nav-label">Workspace</div>
+      <a class="nav-link" href="documentation.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        Documentation
+      </a>
+      <a class="nav-link" href="code-repository.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Code Repository
+      </a>
+      <a class="nav-link" href="test-runner.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6.5L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-5-10.5V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        Test Runner
+      </a>
+      <a class="nav-link" href="todo-board.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        Task Board
+      </a>
+      <a class="nav-link" href="timesheet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        Timesheet
+      </a>
+      <a class="nav-link" href="bug-tracker.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        Bug Tracker
+      </a>
+      <a class="nav-link" href="bug-generator.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Bug Report Generator
+      </a>
+      <a class="nav-link" href="api-tester.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        API Tester
+      </a>
+      <div class="nav-label">Assist</div>
+      <a class="nav-link active" href="ai-assistant.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>
+        AI Assistant
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="theme-switch">
+        <button data-mode="light">☀ Light</button>
+        <button data-mode="dark">☾ Dark</button>
+        <button data-mode="system">🖥 Auto</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="brand"><img src="assets/icons/logo.svg" alt="logo"><div class="brand-text"><span class="name">QA Foundry</span></div></div>
+      <button class="menu-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Built-in helpers</span>
+          <h1>AI Assistant</h1>
+          <p class="sub">Free, offline QA toolkit — plus an optional chat if you connect your own API key.</p>
+        </div>
+      </div>
+
+      <div class="assist-grid" id="tool-cards">
+        <div class="card tool-card panel" data-tool="testcases">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <h3>Test case generator</h3>
+          <p>Describe a feature — get a checklist of positive, negative, and edge-case scenarios.</p>
+        </div>
+        <div class="card tool-card panel" data-tool="testdata">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+          <h3>Test data generator</h3>
+          <p>Names, emails, phone numbers, and Luhn-valid test card numbers for form testing.</p>
+        </div>
+        <div class="card tool-card panel" data-tool="regex">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+          <h3>Regex tester</h3>
+          <p>Try a pattern against sample text and see exactly what matches.</p>
+        </div>
+        <div class="card tool-card panel" data-tool="selectors">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h3>Selector helper</h3>
+          <p>Describe an element — get candidate Playwright/CSS/XPath locators to try.</p>
+        </div>
+        <div class="card tool-card panel" data-tool="testautomation">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6.5L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-5-10.5V2"/><circle cx="12" cy="16" r="1.5"/></svg></div>
+          <h3>AI test automation</h3>
+          <p>Turn a description (or pasted code) into a runnable unit/integration suite, then send it straight to Test Runner.</p>
+        </div>
+        <div class="card tool-card panel" data-tool="chat">
+          <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/></svg></div>
+          <h3>AI chat (bring your own key)</h3>
+          <p>Connect your own Claude or OpenAI API key for open-ended coding help.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <!-- Test case generator -->
+        <div class="tool-panel" id="panel-testcases">
+          <h2 style="font-size:15px;">Test case generator</h2>
+          <div class="field">
+            <label>What are you testing?</label>
+            <input type="text" id="tc-input" placeholder="e.g. login form, file upload, checkout with coupon, search API">
+          </div>
+          <button class="btn btn-primary" id="tc-generate">Generate checklist</button>
+          <div class="gen-checklist" id="tc-output" style="margin-top:16px;"></div>
+        </div>
+
+        <!-- Test data generator -->
+        <div class="tool-panel" id="panel-testdata">
+          <h2 style="font-size:15px;">Test data generator</h2>
+          <div class="flex gap-10" style="flex-wrap:wrap; align-items:flex-end; margin-bottom:12px;">
+            <div class="field" style="margin:0;">
+              <label>Data type</label>
+              <select id="td-type">
+                <option value="person">Full names</option>
+                <option value="email">Emails</option>
+                <option value="phone">Phone numbers</option>
+                <option value="card">Test credit card numbers (Luhn-valid)</option>
+                <option value="uuid">UUIDs</option>
+                <option value="address">Addresses</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; max-width:100px;">
+              <label>Count</label>
+              <input type="number" id="td-count" value="10" min="1" max="200">
+            </div>
+            <button class="btn btn-primary" id="td-generate">Generate</button>
+            <button class="btn" id="td-copy">Copy</button>
+          </div>
+          <div class="result-block" id="td-output">Nothing generated yet.</div>
+        </div>
+
+        <!-- Regex tester -->
+        <div class="tool-panel" id="panel-regex">
+          <h2 style="font-size:15px;">Regex tester</h2>
+          <div class="field">
+            <label>Pattern</label>
+            <input type="text" id="rx-pattern" placeholder="e.g. ^[\\w.-]+@[\\w.-]+\\.\\w+$" class="mono">
+          </div>
+          <div class="field">
+            <label>Flags</label>
+            <input type="text" id="rx-flags" placeholder="g, i, m…" value="g" style="max-width:120px;">
+          </div>
+          <div class="field">
+            <label>Test string</label>
+            <textarea id="rx-text" placeholder="Paste sample text here…"></textarea>
+          </div>
+          <button class="btn btn-primary" id="rx-run">Test pattern</button>
+          <div class="result-block" id="rx-output" style="margin-top:12px;">Results will appear here.</div>
+        </div>
+
+        <!-- Selector helper -->
+        <div class="tool-panel" id="panel-selectors">
+          <h2 style="font-size:15px;">Selector helper</h2>
+          <div class="field">
+            <label>Describe the element</label>
+            <input type="text" id="sel-input" placeholder="e.g. Submit button, Email input, 'Add to cart' link">
+          </div>
+          <div class="field">
+            <label>Element type (optional)</label>
+            <select id="sel-tag">
+              <option value="">Not sure</option>
+              <option value="button">button</option>
+              <option value="input">input</option>
+              <option value="a">link (a)</option>
+              <option value="select">select</option>
+              <option value="div">div / generic container</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="sel-generate">Suggest locators</button>
+          <div class="result-block" id="sel-output" style="margin-top:12px;">Locator suggestions will appear here.</div>
+        </div>
+
+        <!-- AI test automation -->
+        <div class="tool-panel" id="panel-testautomation">
+          <h2 style="font-size:15px;">AI test automation</h2>
+          <p class="text-dim" style="font-size:12.5px; margin-top:-6px;">
+            Describe what you want tested (and optionally paste the code being tested). This builds a runnable
+            <span class="mono">describe</span>/<span class="mono">it</span> suite — using your connected AI key for a smarter result if you've set one up on the AI chat tool, or a built-in generator otherwise — that you can send straight to the Test Runner.
+          </p>
+          <div class="field">
+            <label>What should this suite test?</label>
+            <textarea id="ta-description" placeholder="e.g. a function that validates an email address; a login API endpoint; a discount calculator" style="min-height:60px;"></textarea>
+          </div>
+          <div class="field">
+            <label>Paste the code being tested (optional)</label>
+            <textarea id="ta-code" class="mono" placeholder="function isValidEmail(email) { ... }" style="min-height:110px; font-size:12.5px;"></textarea>
+          </div>
+          <div class="flex gap-10" style="flex-wrap:wrap; align-items:flex-end; margin-bottom:12px;">
+            <div class="field" style="margin:0;">
+              <label>Suite type</label>
+              <select id="ta-type"><option value="unit">Unit test</option><option value="integration">Integration test</option></select>
+            </div>
+            <button class="btn btn-primary" id="ta-generate">Generate test suite</button>
+          </div>
+          <div class="result-block" id="ta-output" style="margin-bottom:12px;">Generated test code will appear here.</div>
+          <div class="flex gap-10">
+            <button class="btn" id="ta-copy">Copy code</button>
+            <button class="btn btn-primary" id="ta-send-runner">Send to Test Runner</button>
+          </div>
+        </div>
+
+        <!-- Chat / BYOK -->
+        <div class="tool-panel" id="panel-chat">
+          <h2 style="font-size:15px;">AI chat</h2>
+          <div class="key-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              This app doesn't ship with a hosted AI model. To chat here, paste your own Anthropic or OpenAI API key —
+              it's stored only in this browser's local storage and sent directly to the provider you choose.
+              Some providers block direct browser requests (CORS); if a request fails for that reason, the tools above still work fully offline with no key needed.
+            </div>
+          </div>
+          <div class="flex gap-10" style="flex-wrap:wrap; margin-bottom:12px;">
+            <div class="field" style="margin:0;">
+              <label>Provider</label>
+              <select id="chat-provider">
+                <option value="anthropic">Anthropic (Claude)</option>
+                <option value="openai">OpenAI</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0; flex:1; min-width:220px;">
+              <label>API key</label>
+              <input type="password" id="chat-key" placeholder="sk-… or your Anthropic key">
+            </div>
+            <button class="btn" id="chat-save-key" style="align-self:flex-end;">Save key locally</button>
+          </div>
+          <div class="chat-log" id="chat-log">
+            <div class="chat-msg sys">Connect a key above, then ask a coding or QA question.</div>
+          </div>
+          <div class="flex gap-10">
+            <input type="text" id="chat-input" placeholder="Ask about a Playwright error, a regex, a test strategy…">
+            <button class="btn btn-primary" id="chat-send">Send</button>
+          </div>
+        </div>
+
+        <div id="tool-placeholder">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/></svg>
+            <h3>Pick a tool above</h3>
+            <p>Every tool here runs locally in your browser — free, private, and available offline.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/theme.js"></script>
+<script src="js/db.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/ai-assistant.js"></script>
+</body>
+</html>

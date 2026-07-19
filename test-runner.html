@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Foundry — Test Runner</title>
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/test-runner.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar-scrim"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/icons/logo.svg" alt="QA Foundry logo">
+      <div class="brand-text"><span class="name">QA Foundry</span><span class="tag">Test Ops Workspace</span></div>
+    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Overview</div>
+      <a class="nav-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="nav-label">Workspace</div>
+      <a class="nav-link" href="documentation.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        Documentation
+      </a>
+      <a class="nav-link" href="code-repository.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Code Repository
+      </a>
+      <a class="nav-link active" href="test-runner.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6.5L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-5-10.5V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        Test Runner
+      </a>
+      <a class="nav-link" href="todo-board.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        Task Board
+      </a>
+      <a class="nav-link" href="timesheet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        Timesheet
+      </a>
+      <a class="nav-link" href="bug-tracker.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        Bug Tracker
+      </a>
+      <a class="nav-link" href="bug-generator.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Bug Report Generator
+      </a>
+      <a class="nav-link" href="api-tester.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        API Tester
+      </a>
+      <div class="nav-label">Assist</div>
+      <a class="nav-link" href="ai-assistant.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>
+        AI Assistant
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="theme-switch">
+        <button data-mode="light">☀ Light</button>
+        <button data-mode="dark">☾ Dark</button>
+        <button data-mode="system">🖥 Auto</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="brand"><img src="assets/icons/logo.svg" alt="logo"><div class="brand-text"><span class="name">QA Foundry</span></div></div>
+      <button class="menu-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Unit & integration testing</span>
+          <h1>Test Runner</h1>
+          <p class="sub">Write and run Jest-style tests right in the browser — no build step, no installs. Unit suites test your functions in isolation; integration suites are free to call real APIs, timers, and multiple pieces together.</p>
+        </div>
+        <button class="btn btn-primary" id="btn-new-suite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New suite
+        </button>
+      </div>
+
+      <div class="tr-layout">
+        <div class="panel">
+          <div class="search-box" style="margin-bottom:12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="tr-search" placeholder="Search suites…">
+          </div>
+          <div class="tabs" style="margin-bottom:8px;">
+            <button class="tab-btn active" data-filter="all">All</button>
+            <button class="tab-btn" data-filter="unit">Unit</button>
+            <button class="tab-btn" data-filter="integration">Integration</button>
+          </div>
+          <div class="suite-list" id="suite-list"></div>
+        </div>
+
+        <div>
+          <div id="no-suite-selected" class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v6.5L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-5-10.5V2"/></svg>
+            <h3>No suite open</h3>
+            <p>Create a new suite, or pick one from the list to edit and run it.</p>
+          </div>
+
+          <div id="suite-editor-wrap" class="hidden">
+            <div class="panel">
+              <div class="tr-toolbar">
+                <div>
+                  <div class="flex gap-8" style="align-items:center;">
+                    <h2 id="editing-suite-name" style="font-size:16px; margin:0;"></h2>
+                    <span class="badge badge-outline" id="editing-suite-type"></span>
+                  </div>
+                  <div class="meta-row" id="editing-suite-meta" style="margin-top:4px;"></div>
+                </div>
+                <div class="flex gap-8" style="flex-wrap:wrap;">
+                  <button class="btn btn-sm" id="btn-import-repo">Import from Code Repository</button>
+                  <label class="btn btn-sm" style="cursor:pointer; margin:0;">
+                    Upload file
+                    <input type="file" id="btn-import-upload" accept=".js,.ts,.jsx,.tsx,.py,.java,.cs,.txt,.json,.yml,.yaml,.feature" hidden>
+                  </label>
+                  <button class="btn btn-sm" id="btn-load-template">Load template</button>
+                  <button class="btn btn-sm btn-danger" id="btn-delete-suite">Delete</button>
+                  <button class="btn btn-sm" id="btn-save-suite">Save</button>
+                  <button class="btn btn-sm btn-primary" id="btn-run-suite">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Run
+                  </button>
+                </div>
+              </div>
+
+              <p class="text-dim" style="font-size:11.5px; margin:-4px 0 10px;">You can also paste code directly into the editor below (Ctrl/Cmd+V).</p>
+
+              <textarea class="tr-editor" id="suite-code" spellcheck="false"></textarea>
+
+              <div id="run-output" class="hidden" style="margin-top:16px;">
+                <div class="summary-bar" id="summary-bar"></div>
+                <div id="run-errors"></div>
+                <div id="result-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Import from Code Repository Modal -->
+<div class="modal-overlay" id="modal-import-repo" hidden>
+  <div class="modal">
+    <div class="modal-head"><h2>Import from Code Repository</h2><button class="icon-btn" data-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <p class="text-dim" style="font-size:12.5px; margin-bottom:10px;">Pick a saved file — its latest version will be inserted at your cursor.</p>
+      <div class="suite-list" id="import-repo-list" style="max-height:340px;"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Suite Modal -->
+<div class="modal-overlay" id="modal-new-suite" hidden>
+  <div class="modal">
+    <div class="modal-head"><h2>New test suite</h2><button class="icon-btn" data-close><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="field" id="field-suite-name">
+        <label>Suite name</label>
+        <input type="text" id="input-suite-name" placeholder="e.g. cart-total.unit.test.js">
+        <span class="error-text"></span>
+      </div>
+      <div class="field">
+        <label>Type</label>
+        <select id="input-suite-type">
+          <option value="unit">Unit test</option>
+          <option value="integration">Integration test</option>
+        </select>
+        <span class="hint">Unit: test a function in isolation. Integration: exercise real requests, multiple functions, or a full flow together.</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>Cancel</button>
+      <button class="btn btn-primary" id="save-new-suite">Create suite</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/theme.js"></script>
+<script src="js/db.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/test-engine.js"></script>
+<script src="js/test-runner.js"></script>
+</body>
+</html>

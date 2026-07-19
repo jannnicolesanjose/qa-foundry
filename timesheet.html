@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Foundry — Timesheet</title>
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/timesheet.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar-scrim"></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/icons/logo.svg" alt="QA Foundry logo">
+      <div class="brand-text"><span class="name">QA Foundry</span><span class="tag">Test Ops Workspace</span></div>
+    </div>
+    <nav class="nav-group">
+      <div class="nav-label">Overview</div>
+      <a class="nav-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <div class="nav-label">Workspace</div>
+      <a class="nav-link" href="documentation.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+        Documentation
+      </a>
+      <a class="nav-link" href="code-repository.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Code Repository
+      </a>
+      <a class="nav-link" href="test-runner.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 2v6.5L4 19a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-5-10.5V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg>
+        Test Runner
+      </a>
+      <a class="nav-link" href="todo-board.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        Task Board
+      </a>
+      <a class="nav-link active" href="timesheet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        Timesheet
+      </a>
+      <a class="nav-link" href="bug-tracker.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        Bug Tracker
+      </a>
+      <a class="nav-link" href="bug-generator.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Bug Report Generator
+      </a>
+      <a class="nav-link" href="api-tester.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        API Tester
+      </a>
+      <div class="nav-label">Assist</div>
+      <a class="nav-link" href="ai-assistant.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.9L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>
+        AI Assistant
+      </a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="theme-switch">
+        <button data-mode="light">☀ Light</button>
+        <button data-mode="dark">☾ Dark</button>
+        <button data-mode="system">🖥 Auto</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <div class="brand"><img src="assets/icons/logo.svg" alt="logo"><div class="brand-text"><span class="name">QA Foundry</span></div></div>
+      <button class="menu-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div>
+          <span class="eyebrow">Hours & activity log</span>
+          <h1>Timesheet</h1>
+          <p class="sub">Log your hours manually, or clock in and let it fill the date, time, and duration for you. Export a range as Excel, PDF, or Word whenever you need to submit it.</p>
+        </div>
+        <div class="flex gap-10">
+          <div class="dropdown">
+            <button class="btn" id="btn-export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+            <div class="dropdown-menu" id="export-menu" hidden>
+              <button id="export-xlsx">Export as Excel (.xlsx)</button>
+              <button id="export-pdf">Export as PDF</button>
+              <button id="export-doc">Export as Word (.doc)</button>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btn-add-entry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add entry
+          </button>
+          <button class="btn" id="btn-add-leave">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Add leave
+          </button>
+        </div>
+      </div>
+
+      <div class="panel profile-panel">
+        <div class="profile-grid">
+          <div class="field">
+            <label>Employee Name</label>
+            <input type="text" id="profile-name" placeholder="Your full name">
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <input type="text" id="profile-position" placeholder="e.g. QA & Test Engineer">
+          </div>
+          <div class="field">
+            <label>Pay Period Start</label>
+            <input type="date" id="profile-period-start">
+          </div>
+          <div class="field">
+            <label>Pay Period End</label>
+            <input type="date" id="profile-period-end">
+          </div>
+        </div>
+      </div>
+
+      <div class="ts-toolbar">
+        <div class="timer-widget" id="timer-widget">
+          <span class="timer-dot" id="timer-dot"></span>
+          <span class="timer-clock" id="timer-clock">00:00:00</span>
+          <input type="text" id="timer-task" class="timer-task-input" placeholder="What are you working on?">
+          <button class="btn btn-sm btn-primary" id="btn-timer-toggle">Clock in</button>
+        </div>
+        <div class="flex gap-10" style="flex-wrap:wrap;">
+          <div class="field" style="margin:0;">
+            <label style="font-size:11px;">From</label>
+            <input type="date" id="filter-from">
+          </div>
+          <div class="field" style="margin:0;">
+            <label style="font-size:11px;">To</label>
+            <input type="date" id="filter-to">
+          </div>
+          <button class="btn btn-sm" id="btn-this-week" style="align-self:flex-end;">This week</button>
+          <button class="btn btn-sm" id="btn-clear-filter" style="align-self:flex-end;">Clear</button>
+        </div>
+      </div>
+
+      <div class="summary-strip" id="summary-strip"></div>
+
+      <div class="ts-sheet-wrap">
+        <table class="ts-sheet">
+          <thead>
+            <tr>
+              <th class="col-center" style="min-width:32px;">#</th>
+              <th class="col-center">Date</th>
+              <th class="col-center">Day</th>
+              <th class="col-center">Time In</th>
+              <th class="col-center">Lunch Break (hrs)</th>
+              <th class="col-center">Time Out</th>
+              <th class="col-center">Hours</th>
+              <th class="col-center">Report / Task</th>
+              <th class="col-center">Notes</th>
+              <th class="col-center" style="min-width:36px;"></th>
+            </tr>
+          </thead>
+          <tbody id="ts-body"></tbody>
+        </table>
+      </div>
+      <div class="empty-state hidden" id="ts-empty" style="margin-top:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        <h3>No entries yet</h3>
+        <p>Add a row manually, or hit "Clock in" above to start timing your work.</p>
+      </div>
+
+      <datalist id="task-suggestions"></datalist>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/db.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/timesheet.js"></script>
+</body>
+</html>
