@@ -1,0 +1,79 @@
+.ts-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.timer-widget {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default); background: var(--bg-surface);
+}
+.timer-widget.running { border-color: var(--accent-soft-border); background: var(--accent-soft); }
+.timer-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
+.timer-widget.running .timer-dot { background: var(--red-500); animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+.timer-clock { font-family: var(--font-mono); font-weight: 700; font-size: 15px; min-width: 74px; }
+.timer-task-input { border: none; background: transparent; font-size: 13px; font-weight: 600; min-width: 160px; padding: 4px 0; }
+.timer-task-input:focus { outline: none; }
+
+/* ---------- Employee / pay period profile ---------- */
+.profile-panel { margin-bottom: 18px; }
+.profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.profile-grid .field { margin: 0; }
+
+.summary-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.summary-tile { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 14px 16px; }
+.summary-tile .s-num { font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+.summary-tile .s-label { font-size: 11.5px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
+.summary-tile.tile-break .s-num { color: var(--accent-strong); }
+
+.ts-sheet-wrap { overflow-x: auto; border: 1px solid var(--border-default); border-radius: var(--radius-lg); background: var(--bg-surface); }
+.ts-sheet { border-collapse: collapse; width: 100%; min-width: 1100px; font-size: 12.5px; }
+.ts-sheet th {
+  position: sticky; top: 0; background: var(--bg-sunken); z-index: 5;
+  text-align: left; padding: 9px 10px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--text-tertiary); border-bottom: 1px solid var(--border-default);
+  border-right: 1px solid var(--border-default); white-space: normal; line-height: 1.3;
+}
+.ts-sheet th.col-center { text-align: center; }
+.ts-sheet td {
+  border-right: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default);
+  padding: 0; vertical-align: middle;
+}
+.ts-sheet td.ts-cell-top { vertical-align: top; }
+.ts-sheet tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-sunken) 40%, transparent); }
+.ts-sheet tr.row-active td { background: var(--accent-soft); }
+.ts-sheet tr.row-has-break td { background: rgba(232,166,160,0.08); }
+.ts-sheet tr.row-leave td { background: rgba(176,160,220,0.1); }
+
+.ts-cell-select-leave {
+  width: 100%; border: none; background: transparent; padding: 8px 10px;
+  font-size: 12.5px; font-weight: 700; color: var(--accent-strong); text-align: center;
+}
+.ts-cell-select-leave:focus { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: -2px; }
+.ts-cell-disabled { padding: 8px 10px; color: var(--text-tertiary); text-align: center; font-size: 12px; }
+.ts-cell-input.ts-hours-editable { text-align: center; font-family: var(--font-mono); font-weight: 700; color: var(--accent-strong); min-width: 60px; }
+
+.ts-cell-input { width: 100%; border: none; background: transparent; padding: 8px 10px; font-size: 12.5px; color: var(--text-primary); min-width: 100px; }
+.ts-cell-input:focus { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: -2px; }
+.ts-cell-input.wide { min-width: 220px; }
+.ts-cell-input.ts-cell-center { text-align: center; min-width: 60px; }
+input[type="date"].ts-cell-center { min-width: 118px; }
+
+/* Center Time In / Time Out, and force AM/PM to render uppercase where the browser respects text-transform on time inputs */
+input[type="time"].ts-cell-input { text-align: center; text-transform: uppercase; }
+
+.ts-cell-readonly { padding: 8px 10px; font-family: var(--font-mono); font-weight: 700; color: var(--accent-strong); white-space: nowrap; text-align: center; }
+.ts-cell-day { padding: 8px 10px; font-family: var(--font-mono); font-weight: 700; color: var(--text-secondary); text-align: center; white-space: nowrap; }
+
+/* Auto-growing bulleted text cells (Task / Notes) */
+.ts-cell-textarea {
+  width: 100%; border: none; background: transparent; padding: 8px 10px;
+  font-size: 12.5px; color: var(--text-primary); font-family: inherit;
+  resize: none; overflow: hidden; min-height: 34px; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word; display: block;
+}
+.ts-cell-textarea:focus { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: -2px; }
+
+td.ts-row-num { color: var(--text-tertiary); text-align: center; font-family: var(--font-mono); background: var(--bg-sunken); min-width: 36px; }
+td.ts-row-actions { text-align: center; min-width: 40px; }
+td.ts-row-actions .icon-btn { margin: 0 auto; }
+
+.export-menu-btn { position: relative; }

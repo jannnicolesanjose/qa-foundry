@@ -1,0 +1,110 @@
+/* =========================================================
+   QA Foundry — Design Tokens
+   Palette: Ink (black), Foundry Red (pastel red), Paper (white)
+   ========================================================= */
+
+:root {
+  /* Brand red ramp (pastel red, used as the single accent) */
+  --red-50:  #FBEEEC;
+  --red-100: #F6DBD7;
+  --red-200: #F0C4BF;
+  --red-300: #E8A6A0;   /* core pastel red */
+  --red-400: #DC8983;
+  --red-500: #C96A63;
+  --red-600: #B14E47;
+  --red-700: #8C3B35;
+  --red-900: #4A211D;
+
+  /* Ink ramp (near-black, never pure #000) */
+  --ink-950: #121010;
+  --ink-900: #181514;
+  --ink-800: #221E1C;
+  --ink-700: #2E2926;
+  --ink-600: #4A423E;
+  --ink-400: #7A716B;
+  --ink-200: #C8C0B8;
+
+  /* Paper ramp (near-white, never pure #fff) */
+  --paper-0:   #FFFFFF;
+  --paper-50:  #FAF8F5;
+  --paper-100: #F3EFEA;
+  --paper-200: #E9E2DA;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(18, 16, 16, 0.08);
+  --shadow-md: 0 4px 16px rgba(18, 16, 16, 0.12);
+  --shadow-lg: 0 12px 32px rgba(18, 16, 16, 0.18);
+
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Consolas", monospace;
+
+  --sidebar-w: 244px;
+  --topbar-h: 60px;
+
+  --transition-fast: 140ms ease;
+  --transition-med: 240ms cubic-bezier(.4,0,.2,1);
+}
+
+/* ---------- LIGHT (default) ---------- */
+:root,
+[data-theme="light"] {
+  --bg-canvas: var(--paper-50);
+  --bg-surface: var(--paper-0);
+  --bg-surface-raised: var(--paper-0);
+  --bg-sunken: var(--paper-100);
+  --bg-hover: var(--paper-100);
+  --bg-sidebar: var(--ink-950);
+  --text-sidebar: var(--paper-100);
+  --text-sidebar-dim: var(--ink-200);
+
+  --text-primary: var(--ink-950);
+  --text-secondary: var(--ink-600);
+  --text-tertiary: var(--ink-400);
+  --text-on-accent: var(--paper-0);
+  --text-inverse: var(--paper-50);
+
+  --border-default: var(--paper-200);
+  --border-strong: var(--ink-200);
+
+  --accent: var(--red-500);
+  --accent-strong: var(--red-600);
+  --accent-soft: var(--red-100);
+  --accent-soft-border: var(--red-200);
+
+  --focus-ring: var(--red-500);
+  --scrollbar-thumb: var(--ink-200);
+}
+
+/* ---------- DARK ---------- */
+[data-theme="dark"] {
+  --bg-canvas: var(--ink-950);
+  --bg-surface: var(--ink-900);
+  --bg-surface-raised: var(--ink-800);
+  --bg-sunken: var(--ink-950);
+  --bg-hover: var(--ink-700);
+  --bg-sidebar: #0D0B0A;
+  --text-sidebar: var(--paper-100);
+  --text-sidebar-dim: var(--ink-400);
+
+  --text-primary: var(--paper-100);
+  --text-secondary: var(--ink-200);
+  --text-tertiary: var(--ink-400);
+  --text-on-accent: var(--paper-0);
+  --text-inverse: var(--ink-950);
+
+  --border-default: var(--ink-700);
+  --border-strong: var(--ink-600);
+
+  --accent: var(--red-300);
+  --accent-strong: var(--red-200);
+  --accent-soft: rgba(232, 166, 160, 0.14);
+  --accent-soft-border: rgba(232, 166, 160, 0.3);
+
+  --focus-ring: var(--red-300);
+  --scrollbar-thumb: var(--ink-600);
+}

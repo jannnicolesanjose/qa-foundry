@@ -1,0 +1,51 @@
+.doc-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-tertiary); margin-bottom: 14px; }
+.breadcrumb button { background: none; border: none; color: var(--accent-strong); font-weight: 600; font-size: 13px; }
+.breadcrumb button:hover { text-decoration: underline; }
+
+.folder-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px; margin-bottom: 22px;
+}
+.folder-card {
+  position: relative;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.folder-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.folder-icon-wrap { width: 38px; height: 30px; border-radius: 5px 5px 4px 4px; position: relative; margin-bottom: 10px; }
+.folder-icon-wrap::before {
+  content: ""; position: absolute; top: -6px; left: 0; width: 18px; height: 7px;
+  border-radius: 3px 3px 0 0; background: inherit;
+}
+.folder-name { font-weight: 700; font-size: 13.5px; margin-bottom: 2px; word-break: break-word; }
+.folder-count { font-size: 11.5px; color: var(--text-tertiary); }
+.folder-menu-btn { position: absolute; top: 8px; right: 6px; }
+
+.file-list { display: flex; flex-direction: column; gap: 8px; }
+.file-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-default); background: var(--bg-surface);
+}
+.file-row .file-ico {
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  background: var(--accent-soft); color: var(--accent-strong);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 10px; font-weight: 800; font-family: var(--font-mono);
+}
+.file-row .file-info { flex: 1; min-width: 0; }
+.file-row .file-name { font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-row .file-meta { font-size: 11.5px; color: var(--text-tertiary); }
+.file-row .file-actions { display: flex; gap: 4px; }
+
+@media (max-width: 600px) {
+  .folder-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}
