@@ -130,6 +130,36 @@
         </div>
       </div>
 
+      <div class="panel leave-balance-panel">
+        <span class="eyebrow">Leave balance</span>
+        <div class="leave-balance-grid">
+          <div class="leave-balance-tile">
+            <div class="lb-head">
+              <span class="lb-type">Paid Leave</span>
+              <span class="lb-allowance-wrap">Allowance <input type="number" id="paid-allowance" min="0" step="0.5" value="14"> days</span>
+            </div>
+            <div class="lb-numbers">
+              <span class="lb-used" id="paid-used">0</span> used &nbsp;·&nbsp;
+              <span class="lb-remaining" id="paid-remaining">14</span> remaining
+            </div>
+          </div>
+          <div class="leave-balance-tile">
+            <div class="lb-head">
+              <span class="lb-type">Sick Leave</span>
+              <span class="lb-allowance-wrap">Allowance <input type="number" id="sick-allowance" min="0" step="0.5" value="10"> days</span>
+            </div>
+            <div class="lb-numbers">
+              <span class="lb-used" id="sick-used">0</span> used &nbsp;·&nbsp;
+              <span class="lb-remaining" id="sick-remaining">10</span> remaining
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin:12px 0 0;">
+          <label>Reminder note</label>
+          <textarea id="leave-reminder-note" style="min-height:44px;" placeholder="e.g. Allowance is per contract and does not yet subtract any upcoming or approved leave taken outside this sheet."></textarea>
+        </div>
+      </div>
+
       <div class="ts-toolbar">
         <div class="timer-widget" id="timer-widget">
           <span class="timer-dot" id="timer-dot"></span>
@@ -137,17 +167,20 @@
           <input type="text" id="timer-task" class="timer-task-input" placeholder="What are you working on?">
           <button class="btn btn-sm btn-primary" id="btn-timer-toggle">Clock in</button>
         </div>
-        <div class="flex gap-10" style="flex-wrap:wrap;">
-          <div class="field" style="margin:0;">
-            <label style="font-size:11px;">From</label>
-            <input type="date" id="filter-from">
+        <div>
+          <span class="eyebrow" style="display:block; margin-bottom:6px;">Filter</span>
+          <div class="flex gap-10" style="flex-wrap:wrap;">
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">From</label>
+              <input type="date" id="filter-from">
+            </div>
+            <div class="field" style="margin:0;">
+              <label style="font-size:11px;">To</label>
+              <input type="date" id="filter-to">
+            </div>
+            <button class="btn btn-sm" id="btn-this-week" style="align-self:flex-end;">This week</button>
+            <button class="btn btn-sm" id="btn-clear-filter" style="align-self:flex-end;">Clear</button>
           </div>
-          <div class="field" style="margin:0;">
-            <label style="font-size:11px;">To</label>
-            <input type="date" id="filter-to">
-          </div>
-          <button class="btn btn-sm" id="btn-this-week" style="align-self:flex-end;">This week</button>
-          <button class="btn btn-sm" id="btn-clear-filter" style="align-self:flex-end;">Clear</button>
         </div>
       </div>
 
