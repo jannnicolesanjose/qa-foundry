@@ -2,6 +2,7 @@
   const $ = (s) => document.querySelector(s);
   const TIMER_KEY = "qaf-timer-state";
   const PROFILE_KEY = "qaf-timesheet-profile";
+  const LEAVE_SETTINGS_KEY = "qaf-leave-settings";
   const DAY_SHORT = ["Su", "M", "T", "W", "TH", "F", "S"];
   const LUNCH_BREAK_MAX_HOURS = 1; // 1 hour cap
   const LEAVE_TYPES = ["Paid Leave", "Sick Leave"];
@@ -22,6 +23,9 @@
     return h * 60 + m;
   }
   // Hours worked = raw time span minus the lunch break (in hours).
+  // Verified against every row of the user's exported PDF — e.g. 07:54 in to
+  // 17:00 out minus a 1-hour lunch = 546 minutes / 60 = 9.10h - 1h = 8.10h,
+  // which matches. The math holds even when Time In is before 08:00.
   function computeHours(timeIn, timeOut, lunchBreakHours) {
     const inM = toMinutes(timeIn), outM = toMinutes(timeOut);
     if (inM === null || outM === null) return 0;
@@ -52,6 +56,12 @@
     if (e.breakMinutes !== undefined) return e.breakMinutes / 60;
     return 0;
   }
+  // Read leave as days, migrating older entries that stored hours directly
+  function leaveDaysOf(e) {
+    if (e.leaveDays !== undefined) return e.leaveDays;
+    if (e.hours !== undefined) return e.hours / 8;
+    return 1;
+  }
 
   // ---------- Profile (employee / pay period) ----------
   function loadProfile() {
@@ -79,11 +89,52 @@
     document.getElementById(id).addEventListener("change", saveProfile);
   });
 
+  // ---------- Leave balance settings (allowance + reminder note) ----------
+  function loadLeaveSettings() {
+    let s = {};
+    try { s = JSON.parse(localStorage.getItem(LEAVE_SETTINGS_KEY)) || {}; } catch { s = {}; }
+    $("#paid-allowance").value = s.paidAllowance ?? 14;
+    $("#sick-allowance").value = s.sickAllowance ?? 10;
+    $("#leave-reminder-note").value = s.note ?? "14 days paid leave and 10 days sick leave per contract. This balance only reflects leave logged in this sheet — subtract separately for any upcoming or approved leave not yet entered here.";
+    autoGrowSimple($("#leave-reminder-note"));
+  }
+  function saveLeaveSettings() {
+    localStorage.setItem(LEAVE_SETTINGS_KEY, JSON.stringify({
+      paidAllowance: Number($("#paid-allowance").value) || 0,
+      sickAllowance: Number($("#sick-allowance").value) || 0,
+      note: $("#leave-reminder-note").value,
+    }));
+  }
+  function autoGrowSimple(el) {
+    el.style.height = "auto";
+    el.style.height = el.scrollHeight + "px";
+  }
+  ["paid-allowance", "sick-allowance"].forEach((id) => {
+    document.getElementById(id).addEventListener("input", () => { saveLeaveSettings(); renderLeaveBalance(); });
+  });
+  $("#leave-reminder-note").addEventListener("input", (e) => { autoGrowSimple(e.target); saveLeaveSettings(); });
+
+  function renderLeaveBalance() {
+    const paidAllowance = Number($("#paid-allowance").value) || 0;
+    const sickAllowance = Number($("#sick-allowance").value) || 0;
+    const paidUsed = entries.filter((e) => e.isLeave && e.leaveType === "Paid Leave").reduce((s, e) => s + (Number(leaveDaysOf(e)) || 0), 0);
+    const sickUsed = entries.filter((e) => e.isLeave && e.leaveType === "Sick Leave").reduce((s, e) => s + (Number(leaveDaysOf(e)) || 0), 0);
+    $("#paid-used").textContent = `${fmtDays(paidUsed)} used`;
+    $("#paid-remaining").textContent = `${fmtDays(Math.max(0, paidAllowance - paidUsed))} remaining`;
+    $("#sick-used").textContent = `${fmtDays(sickUsed)} used`;
+    $("#sick-remaining").textContent = `${fmtDays(Math.max(0, sickAllowance - sickUsed))} remaining`;
+  }
+  function fmtDays(n) {
+    const v = Math.round(n * 10) / 10;
+    return `${v} day${v === 1 ? "" : "s"}`;
+  }
+
   // ---------- Load / render ----------
   async function refresh() {
     entries = await QAFDB.getAll("timesheetEntries");
     await populateTaskSuggestions();
     render();
+    renderLeaveBalance();
   }
 
   async function populateTaskSuggestions() {
@@ -137,7 +188,7 @@
           <td>${leaveTypeSelect(e.id, e.leaveType)}</td>
           <td class="ts-cell-disabled">—</td>
           <td class="ts-cell-disabled">—</td>
-          <td><input type="number" min="0" max="24" step="0.5" placeholder="8" class="ts-cell-input ts-hours-editable" data-id="${e.id}" data-key="hours" value="${e.hours || ""}"></td>
+          <td><input type="number" min="0.5" max="30" step="0.5" placeholder="1" title="Number of leave days" class="ts-cell-input ts-hours-editable" data-id="${e.id}" data-key="leaveDays" value="${leaveDaysOf(e) || ""}"></td>
           <td class="ts-cell-top"><textarea class="ts-cell-textarea" list="task-suggestions" data-id="${e.id}" data-key="task" placeholder="Report / task">${escapeAttr(e.task || "")}</textarea></td>
           <td class="ts-cell-top"><textarea class="ts-cell-textarea" data-id="${e.id}" data-key="notes" placeholder="Notes — press Enter for a new bullet">${escapeAttr(e.notes || "")}</textarea></td>
           <td class="ts-row-actions"><button class="icon-btn" data-del="${e.id}" title="Delete row">
@@ -208,9 +259,10 @@
         delete entry.lunchBreakMinutes; // migrate off legacy fields
         delete entry.breakMinutes;
         entry.hours = computeHours(entry.timeIn, entry.timeOut, lunchHoursOf(entry));
-      } else if (key === "hours" && entry.isLeave) {
-        const val = Math.max(0, Math.min(24, Number(el.value) || 0));
-        entry.hours = Math.round(val * 100) / 100;
+      } else if (key === "leaveDays" && entry.isLeave) {
+        const days = Math.max(0, Number(el.value) || 0);
+        entry.leaveDays = days;
+        entry.hours = Math.round(days * 8 * 100) / 100; // keep an hour-equivalent for aggregate totals
       } else {
         entry[key] = el.value;
         if (key === "timeIn" || key === "timeOut") {
@@ -221,6 +273,7 @@
       await QAFDB.put("timesheetEntries", entry);
       if (key === "timeIn" || key === "timeOut" || key === "date" || key === "lunchBreakHours") render();
       else renderSummary(filteredEntries());
+      if (key === "leaveType" || key === "leaveDays" || key === "date") renderLeaveBalance();
     }, 350);
   }
 
@@ -233,18 +286,14 @@
 
   function renderSummary(list) {
     const totalHours = list.reduce((sum, e) => sum + (e.hours || 0), 0);
-    const totalLeaveHours = list.filter((e) => e.isLeave).reduce((sum, e) => sum + (e.hours || 0), 0);
     const totalLunchHours = list.reduce((sum, e) => sum + (Number(lunchHoursOf(e)) || 0), 0);
     const days = new Set(list.map((e) => e.date)).size;
-    const avg = days ? totalHours / days : 0;
     const today = list.filter((e) => e.date === todayStr()).reduce((s, e) => s + (e.hours || 0), 0);
     $("#summary-strip").innerHTML = `
       <div class="summary-tile"><div class="s-num">${totalHours.toFixed(2)}h</div><div class="s-label">Hours (filtered, incl. leave)</div></div>
-      <div class="summary-tile tile-break"><div class="s-num">${totalLeaveHours.toFixed(2)}h</div><div class="s-label">Leave hours</div></div>
       <div class="summary-tile tile-break"><div class="s-num">${totalLunchHours.toFixed(2)}h</div><div class="s-label">Lunch Break Total</div></div>
       <div class="summary-tile"><div class="s-num">${list.length}</div><div class="s-label">Entries</div></div>
       <div class="summary-tile"><div class="s-num">${days}</div><div class="s-label">Days logged</div></div>
-      <div class="summary-tile"><div class="s-num">${avg.toFixed(2)}h</div><div class="s-label">Avg / day</div></div>
       <div class="summary-tile"><div class="s-num">${today.toFixed(2)}h</div><div class="s-label">Today</div></div>
     `;
   }
@@ -264,7 +313,7 @@
 
   $("#btn-add-leave").addEventListener("click", async () => {
     const entry = {
-      id: QAFDB.uid(), date: todayStr(), isLeave: true, leaveType: LEAVE_TYPES[0], hours: 8,
+      id: QAFDB.uid(), date: todayStr(), isLeave: true, leaveType: LEAVE_TYPES[0], leaveDays: 1, hours: 8,
       task: "", notes: "", createdAt: Date.now(), updatedAt: Date.now(),
     };
     await QAFDB.put("timesheetEntries", entry);
@@ -384,10 +433,14 @@
   function exportRows() {
     return filteredEntries().map((e) => {
       if (e.isLeave) {
+        const days = Number(leaveDaysOf(e)) || 0;
         return {
-          Date: e.date || "", Day: dayLabel(e.date), "Time In": `LEAVE — ${e.leaveType || "Other"}`,
+          Date: e.date || "", Day: dayLabel(e.date),
+          "Time In": `LEAVE — ${e.leaveType || "Other"}`,
           "Lunch Break (hrs)": "", "Time Out": "",
-          Hours: (e.hours || 0).toFixed(2), Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
+          Hours: `${days.toFixed(2)} day${days === 1 ? "" : "s"}`,
+          HoursNumeric: days * 8,
+          Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
           IsLeave: true,
         };
       }
@@ -395,17 +448,20 @@
         Date: e.date || "", Day: dayLabel(e.date), "Time In": e.timeIn || "",
         "Lunch Break (hrs)": (Number(lunchHoursOf(e)) || 0).toFixed(2),
         "Time Out": e.timeOut || "",
-        Hours: (e.hours || 0).toFixed(2), Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
+        Hours: (e.hours || 0).toFixed(2),
+        HoursNumeric: e.hours || 0,
+        Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
         IsLeave: false,
       };
     });
   }
 
   function totalsFor(rows) {
-    const hours = rows.reduce((s, r) => s + parseFloat(r.Hours || 0), 0);
-    const leaveHours = rows.filter((r) => r.IsLeave).reduce((s, r) => s + parseFloat(r.Hours || 0), 0);
+    const hours = rows.reduce((s, r) => s + (r.HoursNumeric || 0), 0);
+    const leaveDaysTotal = rows.filter((r) => r.IsLeave).reduce((s, r) => s + (r.HoursNumeric || 0) / 8, 0);
     const lunchHours = rows.reduce((s, r) => s + (parseFloat(r["Lunch Break (hrs)"]) || 0), 0);
-    return { hours, leaveHours, lunchHours };
+    const daysLogged = new Set(rows.map((r) => r.Date)).size;
+    return { hours, leaveDaysTotal, lunchHours, daysLogged };
   }
 
   function headerLines() {
@@ -415,6 +471,12 @@
     if (p.position) lines.push(`Position: ${p.position}`);
     if (p.periodStart || p.periodEnd) lines.push(`Pay Period: ${p.periodStart || "…"} to ${p.periodEnd || "…"}`);
     return lines;
+  }
+
+  function totalsLine(rows) {
+    const { hours, leaveDaysTotal, lunchHours, daysLogged } = totalsFor(rows);
+    const leaveTxt = leaveDaysTotal > 0 ? `${leaveDaysTotal.toFixed(1)} day${leaveDaysTotal === 1 ? "" : "s"}` : "0 days";
+    return `Total hours (${daysLogged} day${daysLogged === 1 ? "" : "s"} logged): ${hours.toFixed(2)}  |  Leave Taken: ${leaveTxt}  |  Lunch Break Total: ${lunchHours.toFixed(2)}h`;
   }
 
   // ---------- Exports ----------
@@ -433,14 +495,13 @@
     const rows = exportRows();
     if (!rows.length) { QAFToast.error("There's nothing to export in this date range.", "No entries"); return; }
     if (typeof ExcelJS === "undefined") { QAFToast.error("The spreadsheet engine failed to load — check your connection.", "Can't export"); return; }
-    const { hours, leaveHours, lunchHours } = totalsFor(rows);
     const header = headerLines();
 
     const wb = new ExcelJS.Workbook();
     const ws = wb.addWorksheet("Timesheet");
     ws.addRow(["Personal — Timesheet"]).font = { bold: true, size: 18 };
     header.forEach((l) => ws.addRow([l]));
-    ws.addRow([`Total hours (15 days): ${hours.toFixed(2)}`, `Leave Taken: ${leaveHours.toFixed(2)}`, `Lunch Break Total (15 days): ${lunchHours.toFixed(2)}h`]);
+    ws.addRow([totalsLine(rows)]);
     ws.addRow([]);
 
     const headerRow = ws.addRow(XLSX_COLS);
@@ -476,15 +537,14 @@
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape" });
     doc.setFontSize(14);
-    doc.text("Personal — Timesheet", 14, 16);
+    doc.text("Personal Timesheet", 14, 16);
     doc.setFontSize(9.5);
     doc.setTextColor(100);
     let y = 23;
     headerLines().forEach((l) => { doc.text(l, 14, y); y += 5; });
-    const { hours, leaveHours, lunchHours } = totalsFor(rows);
-    doc.text(`Total hours (15 days): ${hours.toFixed(2)}  |  Leave Taken (Hours): ${leaveHours.toFixed(2)}  |  Lunch Break Total (15 days): ${lunchHours.toFixed(2)}h`, 14, y);
+    doc.text(totalsLine(rows), 14, y);
     doc.autoTable({
-      startY: y + 5,  
+      startY: y + 5,
       head: [["Date", "Day", "Time In", "Lunch Break (hrs)", "Time Out", "Hours", "Report / Task", "Notes"]],
       body: rows.map((r) => XLSX_COLS.map((c) => r[c])),
       styles: { fontSize: 8.5, valign: "middle" },
@@ -503,7 +563,6 @@
   $("#export-doc").addEventListener("click", () => {
     const rows = exportRows();
     if (!rows.length) { QAFToast.error("There's nothing to export in this date range.", "No entries"); return; }
-    const { hours, leaveHours, lunchHours } = totalsFor(rows);
     const c = ' align="center" valign="middle" class="center"';
     const tableRows = rows.map((r) => `
       <tr>
@@ -527,7 +586,7 @@
       <body>
         <h1>Personal — Timesheet</h1>
         ${headerHtml}
-        <p>Range: ${escapeAttr(rangeLabel(true))} &nbsp; | &nbsp; Total hours (15 days): ${hours.toFixed(2)} &nbsp; | &nbsp; Leave Taken (Hours): ${leaveHours.toFixed(2)} &nbsp; | &nbsp; Lunch Break Total (15 days): ${lunchHours.toFixed(2)}h</p>
+        <p>Range: ${escapeAttr(rangeLabel(true))} &nbsp; | &nbsp; ${escapeAttr(totalsLine(rows))}</p>
         <table>
           <tr><th>Date</th><th>Day</th><th>Time In</th><th>Lunch Break (hrs)</th><th>Time Out</th><th>Hours</th><th style="text-align:left;">Report / Task</th><th style="text-align:left;">Notes</th></tr>
           ${tableRows}
@@ -552,6 +611,7 @@
   // ---------- Init ----------
   (function init() {
     loadProfile();
+    loadLeaveSettings();
     const state = getTimerState();
     if (state && state.running) startTicking();
     updateTimerUI();
