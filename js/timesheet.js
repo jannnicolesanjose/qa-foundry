@@ -22,6 +22,18 @@
     const [h, m] = hhmm.split(":").map(Number);
     return h * 60 + m;
   }
+  // Format a stored 24-hour "HH:MM" value as 12-hour with AM/PM for exports
+  // (the underlying value and on-screen time picker stay in 24-hour form).
+  function to12Hour(hhmm) {
+    const mins = toMinutes(hhmm);
+    if (mins === null) return "";
+    let h = Math.floor(mins / 60);
+    const m = mins % 60;
+    const ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12;
+    if (h === 0) h = 12;
+    return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+  }
   // Hours worked = raw time span minus the lunch break (in hours).
   // Verified against every row of the user's exported PDF — e.g. 07:54 in to
   // 17:00 out minus a 1-hour lunch = 546 minutes / 60 = 9.10h - 1h = 8.10h,
@@ -445,9 +457,9 @@
         };
       }
       return {
-        Date: e.date || "", Day: dayLabel(e.date), "Time In": e.timeIn || "",
+        Date: e.date || "", Day: dayLabel(e.date), "Time In": to12Hour(e.timeIn),
         "Lunch Break (hrs)": (Number(lunchHoursOf(e)) || 0).toFixed(2),
-        "Time Out": e.timeOut || "",
+        "Time Out": to12Hour(e.timeOut),
         Hours: (e.hours || 0).toFixed(2),
         HoursNumeric: e.hours || 0,
         Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
