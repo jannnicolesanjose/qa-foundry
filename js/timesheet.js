@@ -54,9 +54,17 @@
     const dt = new Date(y, m - 1, d);
     return DAY_SHORT[dt.getDay()];
   }
+  // Always show hours as whole hours + minutes (e.g. "8h 15m"), never a bare
+  // decimal — "8.25h" reads to most people as "8 hours 25 minutes" when it
+  // actually means 8 hours 15 minutes (0.25 * 60 = 15), which is exactly the
+  // kind of "the minutes don't look right" confusion this avoids entirely.
   function fmtHoursOrMins(hours) {
-    if (hours < 1) return Math.round(hours * 60) + "m";
-    return hours.toFixed(2) + "h";
+    const totalMin = Math.round((Number(hours) || 0) * 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h === 0) return `${m}m`;
+    if (m === 0) return `${h}h`;
+    return `${h}h ${m}m`;
   }
   function escapeAttr(str) {
     return String(str).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -302,11 +310,11 @@
     const days = new Set(list.map((e) => e.date)).size;
     const today = list.filter((e) => e.date === todayStr()).reduce((s, e) => s + (e.hours || 0), 0);
     $("#summary-strip").innerHTML = `
-      <div class="summary-tile"><div class="s-num">${totalHours.toFixed(2)}h</div><div class="s-label">Hours (filtered, incl. leave)</div></div>
-      <div class="summary-tile tile-break"><div class="s-num">${totalLunchHours.toFixed(2)}h</div><div class="s-label">Lunch Break Total</div></div>
+      <div class="summary-tile"><div class="s-num">${fmtHoursOrMins(totalHours)}</div><div class="s-label">Hours (filtered, incl. leave)</div></div>
+      <div class="summary-tile tile-break"><div class="s-num">${fmtHoursOrMins(totalLunchHours)}</div><div class="s-label">Lunch Break Total</div></div>
       <div class="summary-tile"><div class="s-num">${list.length}</div><div class="s-label">Entries</div></div>
       <div class="summary-tile"><div class="s-num">${days}</div><div class="s-label">Days logged</div></div>
-      <div class="summary-tile"><div class="s-num">${today.toFixed(2)}h</div><div class="s-label">Today</div></div>
+      <div class="summary-tile"><div class="s-num">${fmtHoursOrMins(today)}</div><div class="s-label">Today</div></div>
     `;
   }
 
@@ -390,7 +398,7 @@
       }
       setTimerState(null);
       clearInterval(timerInterval);
-      QAFToast.success(`Clocked out. Logged ${entry ? entry.hours.toFixed(2) : "0"}h.`);
+      QAFToast.success(`Clocked out. Logged ${entry ? fmtHoursOrMins(entry.hours) : "0m"}.`);
       await refresh();
     } else {
       const task = $("#timer-task").value.trim();
@@ -460,7 +468,7 @@
         Date: e.date || "", Day: dayLabel(e.date), "Time In": to12Hour(e.timeIn),
         "Lunch Break (hrs)": (Number(lunchHoursOf(e)) || 0).toFixed(2),
         "Time Out": to12Hour(e.timeOut),
-        Hours: (e.hours || 0).toFixed(2),
+        Hours: fmtHoursOrMins(e.hours || 0),
         HoursNumeric: e.hours || 0,
         Task: bulletExportText(e.task), Notes: bulletExportText(e.notes),
         IsLeave: false,
@@ -488,7 +496,7 @@
   function totalsLine(rows) {
     const { hours, leaveDaysTotal, lunchHours, daysLogged } = totalsFor(rows);
     const leaveTxt = leaveDaysTotal > 0 ? `${leaveDaysTotal.toFixed(1)} day${leaveDaysTotal === 1 ? "" : "s"}` : "0 days";
-    return `Total hours (${daysLogged} day${daysLogged === 1 ? "" : "s"} logged): ${hours.toFixed(2)}  |  Leave Taken: ${leaveTxt}  |  Lunch Break Total: ${lunchHours.toFixed(2)}h`;
+    return `Total hours (${daysLogged} day${daysLogged === 1 ? "" : "s"} logged): ${fmtHoursOrMins(hours)}  |  Leave Taken: ${leaveTxt}  |  Lunch Break Total: ${fmtHoursOrMins(lunchHours)}`;
   }
 
   // ---------- Exports ----------
