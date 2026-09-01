@@ -1,7 +1,7 @@
 .ts-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 
 .timer-widget {
-  display: flex; align-items: center; gap: 12px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   padding: 10px 16px; border-radius: var(--radius-lg);
   border: 1px solid var(--border-default); background: var(--bg-surface);
 }
@@ -10,7 +10,7 @@
 .timer-widget.running .timer-dot { background: var(--red-500); animation: pulse 1.4s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
 .timer-clock { font-family: var(--font-mono); font-weight: 700; font-size: 15px; min-width: 74px; }
-.timer-task-input { border: none; background: transparent; font-size: 13px; font-weight: 600; min-width: 160px; padding: 4px 0; }
+.timer-task-input { border: none; background: transparent; font-size: 13px; font-weight: 600; min-width: 120px; flex: 1; padding: 4px 0; }
 .timer-task-input:focus { outline: none; }
 
 /* ---------- Employee / pay period profile ---------- */
